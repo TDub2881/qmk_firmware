@@ -25,6 +25,7 @@
 #define OLED_FONT_H "keyboards/keycapsss/kimiko/keymaps/default/glcdfont.c"
 // #define OLED_FONT_WIDTH 5
 // #define OLED_FONT_HEIGHT 7
+#define COMBO_COUNT 4
 
 #ifdef RGBLIGHT_ENABLE
 #   define RGBLIGHT_HUE_STEP 8
