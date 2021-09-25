@@ -95,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [_QWERTY] = LAYOUT(
     KC_LGUI,  KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
     KC_LCTL,  KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_RCTL,
-    ARROWS,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT,
+    ARROWS,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, LT(LOWER,KC_ENT),
     KC_RSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,   KC_LBRC,    KC_RBRC,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_LSFT,
                       KC_LALT, KC_LGUI, KC_ESC, LOWER,   KC_SPC,     KC_SPC,   ARROWS,   KC_RCTL, KC_RGUI, KC_RALT
 ),
@@ -117,7 +117,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,   KC_F1,  KC_F2,    KC_F3,   KC_F4,    KC_F5,                            KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_DELETE,
     _______, XXXXXXX,  KC_HOME,  KC_UP,   KC_END,   KC_PGUP,                          KC_VOLU, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
     _______, XXXXXXX,  KC_LEFT,  KC_DOWN, KC_RIGHT, KC_PGDN,                          KC_VOLD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
-    _______, MAC,      XXXXXXX,  XXXXXXX, XXXXXXX,  XXXXXXX, KC_LBRC,        KC_RBRC, KC_MUTE, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+    _______, MAC,      XXXXXXX,  XXXXXXX, XXXXXXX,  XXXXXXX, KC_LBRC,        KC_RBRC, KC_MUTE, XXXXXXX, XXXXXXX, XXXXXXX, KC_W, _______,
                        _______, _______, _______, _______,   KC_COMM,        KC_DOT,  _______, _______, _______, _______
 ),
 /* LOWER
@@ -159,9 +159,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [_MAC] = LAYOUT(
     KC_LALT,  KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
     KC_LGUI,  KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_RGUI,
-    MARROWS,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT,
+    MARROWS,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, LT(LOWER,KC_ENT),
     KC_RSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,   KC_LBRC,    KC_RBRC,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_LSFT,
-                      KC_LCTL, KC_LGUI, KC_ESC, LOWER,   KC_SPC,     KC_SPC,   ARROWS,   KC_RALT, KC_RGUI, KC_RCTL
+                      KC_LCTL, KC_LGUI, KC_ESC, LOWER,   KC_SPC,     KC_SPC,   MARROWS, KC_RALT, KC_RGUI, KC_RCTL
 ),
 /* MAC
  * ,--------------------------------------------.                    ,----------------------------------------------.
@@ -179,10 +179,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_MAC_ARROWS] = LAYOUT(
     _______,   KC_F1,  KC_F2,    KC_F3,   KC_F4,    KC_F5,                            KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_DELETE,
-    _______, XXXXXXX,LGUI(KC_HOME),KC_UP,LGUI(KC_END),LGUI(KC_PGUP),                  KC_VOLU, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+    _______, XXXXXXX,LALT(KC_HOME),KC_UP,LALT(KC_END),LGUI(KC_PGUP),                  KC_VOLU, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
     _______, XXXXXXX, KC_LEFT,  KC_DOWN, KC_RIGHT, LGUI(KC_PGDN),                    KC_VOLD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
-    _______, QWERTY,  XXXXXXX,  XXXXXXX, XXXXXXX,  XXXXXXX, KC_LBRC,        KC_RBRC, KC_MUTE, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
-                       _______, _______, _______, _______,   KC_COMM,        KC_DOT,  _______, _______, _______, _______
+    _______, QWERTY,  XXXXXXX,  XXXXXXX, XXXXXXX,  XXXXXXX, KC_LBRC,        KC_RBRC, KC_MUTE, XXXXXXX, XXXXXXX, XXXXXXX, KC_M, _______,
+                       _______, _______, _______, _______,  KC_COMM,        KC_DOT,  _______, _______, _______, _______
 )
 
 
@@ -521,11 +521,11 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
                 }
                 break;
             case _MAC_ARROWS:
-               // Cycle through windows
+               // Cycle through programs
                 if (clockwise) {
-                    tap_code16(LALT(KC_TAB));
+                    tap_code16(LGUI(KC_TAB));
                 } else {
-                    tap_code16(LSA(KC_TAB));
+                    tap_code16(S(LGUI(KC_TAB)));
                 }
                 break;
             // If the ADJUST layer is active
@@ -574,9 +574,9 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
             case _MAC:
                 // Scroll by Word MAC edition
                 if (clockwise) {
-                    tap_code16(LALT(KC_RGHT));
+                    tap_code16(LALT(KC_HOME));
                 } else {
-                    tap_code16(LALT(KC_LEFT));
+                    tap_code16(LALT(KC_END));
                 }
                 break;
             case _MAC_ARROWS:
