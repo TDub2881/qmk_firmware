@@ -18,6 +18,17 @@
 
 #include QMK_KEYBOARD_H
 
+/**
+enum custom_keycodes {
+    ULT_ALT = SAFE_RANGE,
+    ULT_WIN,
+    ULT_CTRL,
+    UML_A,
+    UML_U,
+    UML_O,
+    MAC_TOGGLE,
+};
+**/
 
 const key_override_t shft_spc_override = ko_make_basic(MOD_MASK_SHIFT, KC_SPACE, KC_TAB);
 const key_override_t shft_ent_override = ko_make_basic(MOD_MASK_SHIFT, KC_ENT, KC_LALT);
@@ -51,13 +62,19 @@ enum layers {
     _QWERTY,
     _ARROWS,
     _LOWER,
+    _MAC,
+    _MAC_ARROWS
  //   _RAISE,
  //   _ADJUST,
 };
 
+#define QWERTY DF(_QWERTY)
 #define ARROWS MO(_ARROWS)
 //#define RAISE MO(_RAISE)
 #define LOWER MO(_LOWER)
+
+#define MAC DF(_MAC)
+#define MARROWS MO(_MAC_ARROWS)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -78,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  [_QWERTY] = LAYOUT(
     KC_LGUI,  KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
     KC_LCTL,  KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_RCTL,
-    ARROWS,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT,
+    ARROWS,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, LT(LOWER,KC_ENT),
     KC_RSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,   KC_LBRC,    KC_RBRC,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_LSFT,
                       KC_LALT, KC_LGUI, KC_ESC, LOWER,   KC_SPC,     KC_SPC,   ARROWS,   KC_RCTL, KC_RGUI, KC_RALT
 ),
@@ -100,18 +117,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,   KC_F1,  KC_F2,    KC_F3,   KC_F4,    KC_F5,                            KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_DELETE,
     _______, XXXXXXX,  KC_HOME,  KC_UP,   KC_END,   KC_PGUP,                          KC_VOLU, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
     _______, XXXXXXX,  KC_LEFT,  KC_DOWN, KC_RIGHT, KC_PGDN,                          KC_VOLD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
-    _______, XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,  XXXXXXX, KC_LBRC,        KC_RBRC, KC_MUTE, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+    _______, MAC,      XXXXXXX,  XXXXXXX, XXXXXXX,  XXXXXXX, KC_LBRC,        KC_RBRC, KC_MUTE, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
                        _______, _______, _______, _______,   KC_COMM,        KC_DOT,  _______, _______, _______, _______
 ),
 /* LOWER
  * ,-------------------------------------------.                    ,-----------------------------------------.
- * |        |  F1  |  F2  |  F3  |  F4  |  F5  |                    |  F6  |  F7  |  F8  |  F9  | F10  | F11  |
+ * |        |      |      |      |      |      |                    |      |      |      |      |      |      |
  * |--------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |        |  1   |  2   |  3   |  4   |  5   |                    |  6   |  7   |  8   |  9   |   0  | F12  |
+ * |        |      |  (   |  {   |  [   |   '  |                    |   "  |   ]  |  }   |  )   |      |      |
  * |--------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |   `    |   !  |   @  |   #  |   $  |   %  |-------.    ,-------|   ^  |   &  |   *  |   (  |   )  |   ~  |
+ * |        |  !   |   +  |   =  |   *  |   `  |-------.    ,-------|   ~  |   /  |   _  |   -  |   ?  |      |
  * |--------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
- * |        |      |      |      |      |      |-------|    |-------|      |   _  |   +  |   {  |   }  |   \  |
+ * |        |      |      |      |      |      |-------|    |-------|      |      |      |      |      |      |
  * `-------------------------------------------|       /     \      \-----------------------------------------------'
  *                 | LCTRL| LGUI | LALT |LOWER| Space /       \Enter \  |RAISE |BackSP| RGUI | RALT |
  *                 `----------------------------------'       '------------------------------------'
@@ -119,11 +136,53 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_LOWER] = LAYOUT(
     _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______,
-    _______, XXXXXXX, KC_LPRN, KC_LCBR, KC_LBRC, XXXXXXX,                   XXXXXXX, KC_RBRC, KC_RCBR, KC_RPRN, XXXXXXX, _______,
+    _______, XXXXXXX, KC_LPRN, KC_LCBR, KC_LBRC, KC_QUOTE,                  KC_DQUO, KC_RBRC, KC_RCBR, KC_RPRN, XXXXXXX, _______,
     _______, KC_EXLM, KC_PLUS, KC_EQL,  KC_ASTR, KC_GRV,                    KC_TILD, KC_SLSH, KC_UNDS, KC_MINS, KC_QUES, _______,
     _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
                       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 //),
+),
+/* MAC
+ * ,--------------------------------------------.                    ,----------------------------------------------.
+ * |   WIN   |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  |  BSP      |
+ * |---------+------+------+------+------+------|                    |------+------+------+------+------+-----------|
+ * |   Tab   |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |  RCTR     |
+ * |---------+------+------+------+------+------|                    |------+------+------+------+------+-----------|
+ * |  LShift |   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '        |
+ * |---------+------+------+------+------+------|   [   |    |    ]  |------+------+------+------+------+-----------|
+ * |  LCTRL  |   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  | RShift    |
+ * `-------------------------------------------|       /     \      \-----------------------------------------------'
+ *                 | LALT| LGUI | ESC |LOWER|   Space /       \Enter \ |RAISE |BackSP| RGUI | RALT |
+ *                 `----------------------------------'       '------------------------------------'
+ */
+
+ [_MAC] = LAYOUT(
+    KC_LALT,  KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
+    KC_LGUI,  KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_RGUI,
+    MARROWS,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, LT(LOWER,KC_ENT),
+    KC_RSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,   KC_LBRC,    KC_RBRC,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_LSFT,
+                      KC_LCTL, KC_LGUI, KC_ESC, LOWER,   KC_SPC,     KC_SPC,   MARROWS, KC_RALT, KC_RGUI, KC_RCTL
+),
+/* MAC
+ * ,--------------------------------------------.                    ,----------------------------------------------.
+ * |   WIN   |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  |  BSP      |
+ * |---------+------+------+------+------+------|                    |------+------+------+------+------+-----------|
+ * |   Tab   |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |  RCTR     |
+ * |---------+------+------+------+------+------|                    |------+------+------+------+------+-----------|
+ * |  LShift |   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '        |
+ * |---------+------+------+------+------+------|   [   |    |    ]  |------+------+------+------+------+-----------|
+ * |  LCTRL  |   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  | RShift    |
+ * `-------------------------------------------|       /     \      \-----------------------------------------------'
+ *                 | LALT| LGUI | ESC |LOWER|   Space /       \Enter \ |RAISE |BackSP| RGUI | RALT |
+ *                 `----------------------------------'       '------------------------------------'
+ */
+
+[_MAC_ARROWS] = LAYOUT(
+    _______,   KC_F1,  KC_F2,    KC_F3,   KC_F4,    KC_F5,                            KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_DELETE,
+    _______, XXXXXXX,LGUI(KC_HOME),KC_UP,LGUI(KC_END),LGUI(KC_PGUP),                  KC_VOLU, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+    _______, XXXXXXX, KC_LEFT,  KC_DOWN, KC_RIGHT, LGUI(KC_PGDN),                    KC_VOLD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+    _______, QWERTY,  XXXXXXX,  XXXXXXX, XXXXXXX,  XXXXXXX, KC_LBRC,        KC_RBRC, KC_MUTE, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+                       _______, _______, _______, _______,  KC_COMM,        KC_DOT,  _______, _______, _______, _______
 )
 
 
@@ -180,6 +239,26 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 */
+/**
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case ULT_ALT:
+      if (record->event.pressed) {
+        // Do something when pressed
+      } else {
+        // Do something else when release
+      }
+      return false; // Skip all further processing of this key
+    case KC_ENTER:
+      // Play a tone when enter is pressed
+      if (record->event.pressed) {
+        PLAY_SONG(tone_qwerty);
+      }
+      return true; // Let QMK send the enter press/release events
+    default:
+      return true; // Process all other keycodes normally
+  }
+}**/
 
 #ifdef OLED_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
@@ -416,6 +495,14 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
                 }
                 break;
 
+            case _ARROWS:
+                // Cycle through windows
+                if (clockwise) {
+                    tap_code16(LALT(KC_TAB));
+                } else {
+                    tap_code16(LSA(KC_TAB));
+                }
+                break;
             // If the RAISE layer is active
             case _LOWER:
                 // Switch browser tabs
@@ -423,6 +510,22 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
                     tap_code16(LCTL(KC_TAB));
                 } else {
                     tap_code16(RCS(KC_TAB));
+                }
+                break;
+            case _MAC:
+                // Arrow Up/Down
+                if (clockwise) {
+                    tap_code(KC_DOWN);
+                } else {
+                    tap_code(KC_UP);
+                }
+                break;
+            case _MAC_ARROWS:
+               // Cycle through windows
+                if (clockwise) {
+                    tap_code16(LALT(KC_TAB));
+                } else {
+                    tap_code16(LSA(KC_TAB));
                 }
                 break;
             // If the ADJUST layer is active
@@ -451,6 +554,14 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
                 }
                 break;
 
+            case _ARROWS:
+                //Left/Right
+                if (clockwise) {
+                    tap_code(KC_RGHT);
+                } else {
+                    tap_code(KC_LEFT);
+                }
+                break;
             // If the LOWER layer is active
             case _LOWER:
                 // Volume up/down
@@ -460,7 +571,22 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
                     tap_code(KC_VOLD);
                 }
                 break;
-
+            case _MAC:
+                // Scroll by Word MAC edition
+                if (clockwise) {
+                    tap_code16(LALT(KC_RGHT));
+                } else {
+                    tap_code16(LALT(KC_LEFT));
+                }
+                break;
+            case _MAC_ARROWS:
+                //Left/Right
+                if (clockwise) {
+                    tap_code(KC_RGHT);
+                } else {
+                    tap_code(KC_LEFT);
+                }
+                break;
             /**
             // If the ADJUST layer is active
             case _ADJUST:

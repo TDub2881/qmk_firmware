@@ -179,8 +179,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_MAC_ARROWS] = LAYOUT(
     _______,   KC_F1,  KC_F2,    KC_F3,   KC_F4,    KC_F5,                            KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_DELETE,
-    _______, XXXXXXX,LALT(KC_HOME),KC_UP,LALT(KC_END),LGUI(KC_PGUP),                  KC_VOLU, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
-    _______, XXXXXXX, KC_LEFT,  KC_DOWN, KC_RIGHT, LGUI(KC_PGDN),                    KC_VOLD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+    _______, XXXXXXX,RALT(KC_LEFT),KC_UP,RALT(KC_RIGHT),RALT(KC_UP),                  KC_VOLU, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+    _______, XXXXXXX, KC_LEFT,  KC_DOWN, KC_RIGHT, RALT(KC_DOWN),                    KC_VOLD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
     _______, QWERTY,  XXXXXXX,  XXXXXXX, XXXXXXX,  XXXXXXX, KC_LBRC,        KC_RBRC, KC_MUTE, XXXXXXX, XXXXXXX, XXXXXXX, KC_M, _______,
                        _______, _______, _______, _______,  KC_COMM,        KC_DOT,  _______, _______, _______, _______
 )
@@ -507,9 +507,9 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
             case _LOWER:
                 // Switch browser tabs
                 if (clockwise) {
-                    tap_code16(LCTL(KC_TAB));
+                    tap_code(KC_MS_WH_UP);
                 } else {
-                    tap_code16(RCS(KC_TAB));
+                    tap_code(KC_MS_WH_DOWN);
                 }
                 break;
             case _MAC:
@@ -523,9 +523,9 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
             case _MAC_ARROWS:
                // Cycle through programs
                 if (clockwise) {
-                    tap_code16(LGUI(KC_TAB));
+                    tap_code(LGUI(KC_TAB));
                 } else {
-                    tap_code16(S(LGUI(KC_TAB)));
+                    tap_code(S(LGUI(KC_TAB)));
                 }
                 break;
             // If the ADJUST layer is active
@@ -574,9 +574,9 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
             case _MAC:
                 // Scroll by Word MAC edition
                 if (clockwise) {
-                    tap_code16(LALT(KC_HOME));
+                    tap_code(LALT(KC_LEFT));
                 } else {
-                    tap_code16(LALT(KC_END));
+                    tap_code(LALT(KC_RGHT));
                 }
                 break;
             case _MAC_ARROWS:
